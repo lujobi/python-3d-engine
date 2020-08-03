@@ -3,8 +3,8 @@ import numpy as np
 import time
 import threading
 
-from utils.LockableData import LockableData
-from Engine import Engine
+from .utils.LockableData import LockableData
+from .Engine import Engine
 
 WIDTH, HEIGHT = 1000, 1000
 

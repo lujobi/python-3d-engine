@@ -6,5 +6,5 @@ class Sphere(BaseObject):
     self.radius = radius
     super().__init__(pos)
 
-  def intersect(self, ray):
+  def intersect(self, ray, hit):
     pass

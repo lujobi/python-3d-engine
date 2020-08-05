@@ -1,19 +1,32 @@
 import pygame
 from .View.Color.colors import StaticColor
+from .View.Camera.camera import Camera
+from .Objects.ground_plane import GroundSphere
+import numpy as np
 
 class Engine:
-  def __init__(self):
+  def __init__(self, width, height):
     self.pos = (0,0)
+    self.camera = Camera((width, height), [0,-4,4], [0, 0, 0], 1)
+    self.objects = [GroundSphere()]
 
   def render(self, screen):
-    screen.fill(StaticColor.WHITE)
+    #screen.fill(StaticColor.WHITE)
     width, height  = screen.get_size()
 
-    pygame.draw.circle(screen, StaticColor.BLACK, self.pos, 3)
+    pixels = self.camera.dispatch_rays(self.objects)
+    # pixels = np.full((width, height, 3), 255)
+    surf = pygame.surfarray.make_surface(pixels)
+    screen.blit(surf, (0, 0))
+
+    #pygame.draw.circle(screen, StaticColor.BLACK, self.pos, 3)
     pygame.display.flip()
+
+    print('done')
 
 
   def tick(self, stop, events, tick):
+    pass
     self.pos = (tick*200%1000, int(tick*200/1000))
 
     for event in events:

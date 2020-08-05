@@ -1,11 +1,11 @@
 from src.Engine import Engine
 from src.app import App
+import numpy as np
 
-
-WIDTH, HEIGHT = 1000, 1000
+WIDTH, HEIGHT = 500, 500
 
 def run():
-  e = Engine()
+  e = Engine(WIDTH, HEIGHT)
   app = App(WIDTH, HEIGHT, 'Test Engine', 30, e)
   app.run()
 

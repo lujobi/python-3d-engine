@@ -7,5 +7,5 @@ class BaseObject(ABC):
     super().__init__()
   
   @abstractmethod
-  def intersect(self, ray):
+  def intersect(self, ray, hit):
     pass

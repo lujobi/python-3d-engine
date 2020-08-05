@@ -1,14 +1,16 @@
 import pygame
 from .View.Color.colors import StaticColor
 from .View.Camera.camera import Camera
-from .Objects.ground_plane import GroundSphere
+from .Objects.ground_plane import GroundPlane
+from .Objects.sphere import Sphere
+
 import numpy as np
 
 class Engine:
   def __init__(self, width, height):
     self.pos = (0,0)
     self.camera = Camera((width, height), [0,-4,4], [0, 0, 0], 1)
-    self.objects = [GroundSphere()]
+    self.objects = [GroundPlane(), Sphere([0, 2, 0], 2)]
 
   def render(self, screen):
     #screen.fill(StaticColor.WHITE)
@@ -21,9 +23,6 @@ class Engine:
 
     #pygame.draw.circle(screen, StaticColor.BLACK, self.pos, 3)
     pygame.display.flip()
-
-    print('done')
-
 
   def tick(self, stop, events, tick):
     pass

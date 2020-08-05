@@ -32,7 +32,9 @@ class App:
       if time.time_ns() - t_last > 1E9:
         t_last = time.time_ns()
         fps = render_count
-        pygame.display.set_caption(f'{self._title} - at {fps} FPS, {self._requested_tps} TPS')
+        title = f'{self._title} - at {fps} FPS, {self._requested_tps} TPS'
+        print(title)
+        pygame.display.set_caption(title)
         render_count = 0     
 
       self.engine.render(self.screen)

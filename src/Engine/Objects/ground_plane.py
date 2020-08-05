@@ -1,10 +1,10 @@
 from .base_object import BaseObject
 import numpy as np
 
-class GroundSphere(BaseObject):
+class GroundPlane(BaseObject):
 
   def __init__(self):
-    super().__init__(np.array([0,0,0]))
+    super().__init__([0,0,0])
 
   def intersect(self, ray, hit):
     t = ray.origin[2] / ray.direction[2]

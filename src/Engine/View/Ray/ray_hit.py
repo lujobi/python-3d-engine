@@ -5,3 +5,6 @@ class RayHit:
     self.position = position
     self.distance = distance
     self.normal = normal
+
+  def __str__(self):
+    return f'Ray hit:\n - Position: {self.position}\n - Distance: {self.distance}\n - Normal: {self.normal}'

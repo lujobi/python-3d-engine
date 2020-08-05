@@ -1,6 +1,7 @@
 import numpy as np
+from numba import jit
 
-
+@jit
 def shade(ray, hit):
   if (hit.distance < np.Inf):
     return hit.normal * 128 + 128

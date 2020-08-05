@@ -7,6 +7,6 @@ class BaseObject(ABC):
     self.position = np.array(position)
     super().__init__()
   
-  @abstractmethod
+  #@abstractmethod
   def intersect(self, ray, hit):
     pass

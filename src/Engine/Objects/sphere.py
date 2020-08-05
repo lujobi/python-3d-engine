@@ -1,13 +1,22 @@
 import numpy as np
 from .base_object import BaseObject
 from ...utils.Algebra import normalize
+from numba import float32    # import the types
+from numba.experimental import jitclass
 
+spec = [
+  ('position', float32[:]),
+  ('radius', float32),
+]
 
-class Sphere(BaseObject):
+dt = np.float32
+
+@jitclass(spec)
+class Sphere:
 
   def __init__(self, position, radius):
     self.radius = radius
-    super().__init__(position)
+    self.position = np.array(position, dt)
 
   def intersect(self, ray, hit):
     d = ray.origin - self.position

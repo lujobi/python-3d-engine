@@ -16,6 +16,7 @@ class Engine:
     #screen.fill(StaticColor.WHITE)
     width, height  = screen.get_size()
 
+    pixels = self.camera.precalc_basis_rays()
     pixels = self.camera.dispatch_rays(self.objects)
     # pixels = np.full((width, height, 3), 255)
     surf = pygame.surfarray.make_surface(pixels)

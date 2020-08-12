@@ -10,13 +10,12 @@ class Engine:
   def __init__(self, width, height):
     self.pos = (0,0)
     self.camera = Camera((width, height), [0,-4,4], [0, 0, 0], 1)
-    self.objects = [GroundPlane(), Sphere([0, 2, 0], 2)]
+    self.objects = [Sphere([0, 2, 0], 2), GroundPlane()]
 
   def render(self, screen):
     #screen.fill(StaticColor.WHITE)
     width, height  = screen.get_size()
 
-    pixels = self.camera.precalc_basis_rays()
     pixels = self.camera.dispatch_rays(self.objects)
     # pixels = np.full((width, height, 3), 255)
     surf = pygame.surfarray.make_surface(pixels)

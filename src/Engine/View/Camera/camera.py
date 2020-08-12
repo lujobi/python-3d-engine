@@ -5,20 +5,26 @@ from scipy.spatial.transform import Rotation as R
 from ..Shader.temp import shade
 
 import numpy as np
-from numba import jit, float32, typeof
+from numba import jit, double, typeof
 from numba.experimental import jitclass
 
+from src.utils.timer import timeit
+import time
+
+import concurrent.futures
+
 spec = [
-  ('size', float32[:]),
-  ('position', float32[:]),
-  ('rotation_matrix', float32[:]),
-  ('direction', float32[:]),
-  ('focal_length', float32),
-  ('focal_point', float32[:]),
-  ('basis_rays', float32[:]),
+  ('size', double[:]),
+  ('position', double[:]),
+  ('rotation_matrix', double[:]),
+  ('direction', double[:]),
+  ('focal_length', double),
+  ('focal_point', double[:]),
+  ('basis_rays', double[:]),
 ]
 
-dt = np.float32
+dt = np.double
+
 
 #@jitclass(spec)
 class Camera:
@@ -31,6 +37,7 @@ class Camera:
     self.focal_point = position - focal_length * self.direction
     self.basis_rays = self.precalc_basis_rays()
 
+  @timeit
   def precalc_basis_rays(self):
     width, height = self.size
     aspect_ratio = width/height
@@ -56,20 +63,41 @@ class Camera:
 
     return rays
 
+
+
+  @timeit
   def dispatch_rays(self, objects):
     return dispatch_rays(self.size, self.basis_rays, self.rotation_matrix, self.focal_point, objects)
+  
+  def dispatch_rays_mt(self, objects):
 
-#@vectorize([float32[::]((int32,int32), float32[::], float32[::], float32[:], pyobject)], fastmath = True)
+
+    arrays = np.array_split(self.basis_rays, 8)
+    sol = np.zeros((*self.size, 3), dt)
+    sol_split=np.array_split(sol, 8)
+
+    def thread_function(ipt):
+      rays, index = ipt
+      sol_split[index] = dispatch_rays(self.size, rays, self.rotation_matrix, self.focal_point, objects)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+      executor.map(thread_function, zip(arrays, range(len(arrays))))
+    
+    print(sol)
+    print(sol_split)
+    return sol
+    # return dispatch_rays(self.size, self.basis_rays, self.rotation_matrix, self.focal_point, objects)
+
 @jit(nopython=True, parallel = True, fastmath = True)
 def dispatch_rays(size, basis_rays, rotation_matrix, focal_point, objects):
   width, height = size
   dirs = np.dot(basis_rays, rotation_matrix)
 
-  res = np.zeros((width, height, 3))
+  res = np.zeros((width, height, 3), dt)
 
   for i, d in enumerate(dirs):
     ray = Ray(focal_point, d)
-    hit = RayHit()
+    hit = RayHit(np.array([0,0,0], dt), np.Inf, np.array([0,0,0], dt))
     for obj in objects:
       hit = obj.intersect(ray, hit)
 

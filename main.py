@@ -2,7 +2,7 @@ from src.Engine import Engine
 from src.app import App
 import numpy as np
 
-WIDTH, HEIGHT = 100, 100
+WIDTH, HEIGHT = 1000, 1000
 
 def run():
   e = Engine(WIDTH, HEIGHT)

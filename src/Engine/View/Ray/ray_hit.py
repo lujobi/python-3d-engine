@@ -12,7 +12,7 @@ dt = np.double
 
 @jitclass(spec)
 class RayHit:
-  def __init__(self, position=np.array([0,0,0], dt), distance=np.Inf, normal=np.array([0,0,0], dt)):
+  def __init__(self, position, distance, normal):
     self.position = position
     self.distance = distance
     self.normal = normal

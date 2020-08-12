@@ -1,12 +1,13 @@
 from .base_object import BaseObject
 import numpy as np
-from numba import float32, typeof
+from numba import double, typeof
 from numba.experimental import jitclass
 
-dt = np.float32
+
+dt = np.double
 
 spec = [
-  ('position', float32[:]),
+  ('position', double[:]),
 ]
 
 @jitclass(spec)

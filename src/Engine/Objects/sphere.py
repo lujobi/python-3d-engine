@@ -1,15 +1,15 @@
 import numpy as np
 from .base_object import BaseObject
 from ...utils.Algebra import normalize
-from numba import float32    # import the types
+from numba import double    # import the types
 from numba.experimental import jitclass
 
 spec = [
-  ('position', float32[:]),
-  ('radius', float32),
+  ('position', double[:]),
+  ('radius', double),
 ]
 
-dt = np.float32
+dt = np.double
 
 @jitclass(spec)
 class Sphere:
@@ -32,6 +32,7 @@ class Sphere:
     if (t>0 and t < hit.distance):
         hit.distance = t
         hit.position = ray.origin + t * ray.direction
-        hit.normal = normalize(hit.position - self.position)
+        tmp = hit.position - self.position
+        hit.normal = tmp / np.linalg.norm(tmp)
     
     return hit

@@ -10,10 +10,15 @@ from src.utils.timer import timeit
 class Engine:
   def __init__(self, width, height):
     self.pos = (0,0)
-    h = 1
-    r = 2
-    self.camera = Camera((width, height), [0,-6,0.2], [0, 0, 0], 1)
-    self.objects = [Sphere([-r*1.01, 0, h], r), Sphere([r, 0, h], r), GroundPlane()]
+    self.camera = Camera((width, height), [0,-6, 4], [0, 0, 0], 1)
+    r = 1
+    h = 3
+    sph = 10
+    tmp = [[Sphere([h*i, h*j, 2], r) for i in range(-sph, sph+1)] for j in range(-sph, sph+1)]
+    tmp = [item for sublist in tmp for item in sublist]
+    tmp.append(GroundPlane())
+    self.objects = tmp
+    #self.objects = [Sphere([-r*1.01, 0, h], r), Sphere([r, 0, h], r), GroundPlane()]
 
   @timeit
   def render(self, screen):

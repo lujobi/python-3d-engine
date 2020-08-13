@@ -5,6 +5,7 @@ from scipy.spatial.transform import Rotation as R
 from ..Shader.temp import shade
 
 import numpy as np
+from tqdm import tqdm
 
 class Camera:
   def __init__(self, size, position, euler_angles, focal_length):
@@ -55,8 +56,8 @@ class Camera:
 
     res = np.zeros((width, height, 3))
 
-    for i, d in enumerate(dirs):
-      ray = Ray(self.focal_point, d)
+    for i in tqdm(range(len(dirs))):
+      ray = Ray(self.focal_point, dirs[i])
 
       result = np.array([0, 0, 0], np.double)
       for _ in range(8):

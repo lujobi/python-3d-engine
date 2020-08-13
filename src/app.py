@@ -27,9 +27,12 @@ class App:
 
   def run(self):
     self.settings.set('running', True)
+    tick = 0
     while self.settings.get('running'):
       self.engine.render(self.screen)
-      self.engine.tick(self._stop, pygame.event.get(), tick_count)
+      self.engine.tick(self._stop, pygame.event.get(), tick)
+      tick += 1
+      print(tick)
 
     print('done')
     pygame.quit()

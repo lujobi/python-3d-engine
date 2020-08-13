@@ -7,7 +7,7 @@ class GroundPlane(BaseObject):
     super().__init__([0,0,0])
 
   def intersect(self, ray, hit):
-    t = ray.origin[2] / ray.direction[2]
+    t = -ray.origin[2] / ray.direction[2]
 
     if (t>0 and t < hit.distance):
         hit.distance = t

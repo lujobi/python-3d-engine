@@ -5,18 +5,24 @@ from .Objects.ground_plane import GroundPlane
 from .Objects.sphere import Sphere
 
 import numpy as np
+from src.utils.timer import timeit
 
 class Engine:
   def __init__(self, width, height):
     self.pos = (0,0)
-    self.camera = Camera((width, height), [0,-4,4], [0, 0, 0], 1)
-    self.objects = [GroundPlane(), Sphere([0, 2, 0], 2)]
+    h = 1
+    r = 2
+    self.camera = Camera((width, height), [0,-6,0.2], [0, 0, 0], 1)
+    self.objects = [GroundPlane()] #[Sphere([-r*1.01, 0, h], r), Sphere([r, 0, h], r), GroundPlane()]
 
+  @timeit
   def render(self, screen):
     #screen.fill(StaticColor.WHITE)
     width, height  = screen.get_size()
 
     pixels = self.camera.dispatch_rays(self.objects)
+    #for i in range(2, 4):
+    #  pixels = self.camera.dispatch_rays(self.objects)
     # pixels = np.full((width, height, 3), 255)
     surf = pygame.surfarray.make_surface(pixels)
     screen.blit(surf, (0, 0))

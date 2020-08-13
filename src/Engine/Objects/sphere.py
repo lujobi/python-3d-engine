@@ -11,18 +11,18 @@ class Sphere(BaseObject):
 
   def intersect(self, ray, hit):
     d = ray.origin - self.position
-    p1 = np.dot(ray.direction, d)
+    p1 = -np.dot(ray.direction, d)
     p2sqr = p1 * p1 - np.dot(d, d) + self.radius * self.radius
 
     if (p2sqr < 0):
-        return hit
+      return hit
 
     p2 = np.sqrt(p2sqr)
-    t = - (p1 - p2  if p1 - p2 > 0  else p1 + p2)
+    t = p1 - p2  if p1 - p2 > 0  else p1 + p2
 
     if (t>0 and t < hit.distance):
-        hit.distance = t
-        hit.position = ray.origin + t * ray.direction
-        hit.normal = normalize(hit.position - self.position)
+      hit.distance = t
+      hit.position = ray.origin + t * ray.direction
+      hit.normal = normalize(hit.position - self.position)
     
     return hit

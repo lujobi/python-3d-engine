@@ -6,3 +6,6 @@ def normalize(vec):
   if norm == 0: 
     return vec
   return vec / norm
+
+def reflect(vec, normal):
+  return vec - 2 * np.dot(vec, normal) * normal

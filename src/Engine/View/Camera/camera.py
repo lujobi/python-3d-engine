@@ -29,10 +29,10 @@ class Camera:
       x_pix_pos[x] = x_start + x * x_step
 
     z_pix_pos = np.zeros(height)
-    z_start = 1/aspect_ratio + 1 / height
+    z_start = 1/aspect_ratio - 1 / height
     z_step = 2 / height 
     for z in range(height):
-      z_pix_pos[z] = z_start + z * z_step
+      z_pix_pos[z] = z_start - z * z_step
 
     rays = np.zeros((width*height, 3))
     for x in range(width):
@@ -59,20 +59,16 @@ class Camera:
       ray = Ray(self.focal_point, d)
 
       result = np.array([0, 0, 0], np.double)
-
-      ray, hit = self.trace(ray, objects)
-      ray, result = shade(ray, hit)
-
-      # for _ in range(8):
-      #   ray, hit = self.trace(ray, objects)
-      #   energy = ray.energy
-      #   ray, color = shade(ray, hit)
-      #   result += np.multiply(energy, color)
-      #   if not np.any(ray.energy):
-      #     break
+      for _ in range(8):
+        ray, hit = self.trace(ray, objects)
+        energy = ray.energy
+        ray, color = shade(ray, hit)
+        result += np.multiply(energy, color)
+        if not np.any(ray.energy):
+          break
       a = i % width
       b = int(i / height)
-      res[i % width][int(i / height)] = np.copy(result)
+      res[i % width][int(i / height)] = result
     
     return res
 

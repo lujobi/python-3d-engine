@@ -13,7 +13,7 @@ class Engine:
     h = 1
     r = 2
     self.camera = Camera((width, height), [0,-6,0.2], [0, 0, 0], 1)
-    self.objects = [GroundPlane()] #[Sphere([-r*1.01, 0, h], r), Sphere([r, 0, h], r), GroundPlane()]
+    self.objects = [Sphere([-r*1.01, 0, h], r), Sphere([r, 0, h], r), GroundPlane()]
 
   @timeit
   def render(self, screen):
